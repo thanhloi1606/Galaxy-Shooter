@@ -19,7 +19,28 @@ public class Player : MonoBehaviour
     {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticaltalInput = Input.GetAxis("Vertical");
-        transform.Translate(Vector3.right * horizontalInput * _speed *Time.deltaTime + Vector3.up * verticaltalInput * _speed *Time.deltaTime);
+        Vector3 inputDirection = new Vector3(horizontalInput, verticaltalInput, 0);
+        transform.Translate(inputDirection * _speed *Time.deltaTime);
 
+        //Bound the player y= (-4, 6) and x = (-9, 9)
+
+        if ((transform.position.x > 9))
+        {
+            transform.position = new Vector3(9, transform.position.y, 0);
+        }
+        if ((transform.position.x < -9))
+        {
+            transform.position = new Vector3(-9, transform.position.y, 0);
+        }
+        if ((transform.position.y < -4))
+        {
+            transform.position = new Vector3(transform.position.x, -4, 0);
+        }
+        if ((transform.position.y > 6))
+        {
+            transform.position = new Vector3(transform.position.x, 6, 0);
+        }
+
+        
     }
 }
