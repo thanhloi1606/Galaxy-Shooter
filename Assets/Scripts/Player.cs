@@ -17,12 +17,16 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        calculateMovement();       
+    }
+
+    void calculateMovement()
+    {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticaltalInput = Input.GetAxis("Vertical");
+        
         Vector3 inputDirection = new Vector3(horizontalInput, verticaltalInput, 0);
         transform.Translate(inputDirection * _speed *Time.deltaTime);
-
-        //Bound the player y= (-4, 6) and x = (-9, 9)
 
         if ((transform.position.x > 9))
         {
@@ -40,7 +44,5 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, 6, 0);
         }
-
-        
     }
 }
