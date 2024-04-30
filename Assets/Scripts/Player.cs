@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -10,8 +11,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _laserPrefabs;
     [SerializeField]
-    private float _fireRate = 0.05f;
+    private float _fireRate = 3f;
     private float _canFire = -1;
+
+    private int _lives = 3;
     // Start is called before the first frame update
     void Start()
     {
@@ -59,5 +62,14 @@ public class Player : MonoBehaviour
     {
         _canFire = Time.time + _fireRate;
         Instantiate(_laserPrefabs, transform.position + new Vector3(0,1,0), Quaternion.identity);
+    }
+    public void Damage()
+    {
+        _lives -= 1;
+
+        if (_lives < 1)
+        {
+            Destroy(this.gameObject);
+        }
     }
 }
