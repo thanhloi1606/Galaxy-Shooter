@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 6f;
+    private float _speedMultiplier = 2;
 
     [SerializeField]
     private GameObject _laserPrefabs;
@@ -21,6 +22,12 @@ public class Player : MonoBehaviour
     private Spawn _spawnManager;
     // Start is called before the first frame update
     private bool _isTrippleShotActive = false;
+    private bool _isSpeedBootsActive = false;
+    private bool _isShieldActive = false;
+
+    [SerializeField]
+    private GameObject _shieldVisualizer;
+
     void Start()
     {
         //Take the current position =  new position(0,0,0 )
@@ -49,6 +56,7 @@ public class Player : MonoBehaviour
         
         Vector3 inputDirection = new Vector3(horizontalInput, verticaltalInput, 0);
         transform.Translate(inputDirection * _speed *Time.deltaTime);
+      
 
         if ((transform.position.x > 9))
         {
@@ -83,6 +91,12 @@ public class Player : MonoBehaviour
     }
     public void Damage()
     {
+        if (_isShieldActive == true)
+        {
+            _shieldVisualizer.SetActive(false);
+            _isShieldActive = false;
+            return;
+        }
         _lives -= 1;
 
         if (_lives < 1)
@@ -100,5 +114,25 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(5.0f);
         _isTrippleShotActive = false;
+    }
+
+    public void speedBootsActive()
+    {
+        _isSpeedBootsActive = true;
+        _speed *= _speedMultiplier;
+        StartCoroutine(SpeedBootsDownRoutine());
+
+    }
+    IEnumerator SpeedBootsDownRoutine()
+    {
+        yield return new WaitForSeconds(5.0f);
+        _isSpeedBootsActive = false;
+        _speed /= _speedMultiplier;
+    }
+
+    public void ShieldActive()
+    {
+        _isShieldActive = true;
+        _shieldVisualizer.SetActive(true);
     }
 }

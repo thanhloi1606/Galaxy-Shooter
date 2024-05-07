@@ -13,6 +13,8 @@ public class Powerup : MonoBehaviour
     // 0 = Triple Shot
     // 1 = Speed
     // 2 = Shield
+    [SerializeField]
+    private int _powerUpID;
     void Update()
     {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
@@ -30,8 +32,22 @@ public class Powerup : MonoBehaviour
     {
         if (other.tag == "Player")
         {
+            Player player = other.GetComponent<Player>();
+            switch (_powerUpID)
+            {
+                case 0:
+                    player.tripleShotActive();
+                    break;
+                case 1:
+                    player.speedBootsActive();
+                    break;
+                case 2:
+                    player.ShieldActive();
+                    break;
+                default:
+                    break;
+            }
             Destroy(this.gameObject);
-            other.GetComponent<Player>().tripleShotActive();
         }
     }
 }
