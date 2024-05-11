@@ -28,14 +28,24 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _shieldVisualizer;
 
+    [SerializeField]
+    private int _score = 0;
+
+    private UIManager _uiManager;
+
     void Start()
     {
         //Take the current position =  new position(0,0,0 )
         transform.position = new Vector3(0,0,0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<Spawn>();
+        _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
         if (_spawnManager == null)
         {
             Debug.LogError("The Spawn Manager is null");
+        }
+        if (_uiManager  == null)
+        {
+            Debug.LogError("The UI Manager is null");
         }
     }
 
@@ -98,11 +108,13 @@ public class Player : MonoBehaviour
             return;
         }
         _lives -= 1;
+        _uiManager.UpdateLives(_lives);
 
         if (_lives < 1)
         {
             _spawnManager.onPlayerDeath();
             Destroy(this.gameObject);
+            _uiManager.showGameOverText();
         }
     }
     public void tripleShotActive()
@@ -134,5 +146,10 @@ public class Player : MonoBehaviour
     {
         _isShieldActive = true;
         _shieldVisualizer.SetActive(true);
+    }
+    public void AddScore(int points)
+    {
+        _score += points;
+        _uiManager.UpdateScore(_score);
     }
 }
