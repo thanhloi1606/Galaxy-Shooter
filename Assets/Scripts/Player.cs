@@ -114,7 +114,6 @@ public class Player : MonoBehaviour
         {
             _spawnManager.onPlayerDeath();
             Destroy(this.gameObject);
-            _uiManager.showGameOverText();
         }
     }
     public void tripleShotActive()
